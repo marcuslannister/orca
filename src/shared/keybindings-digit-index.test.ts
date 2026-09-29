@@ -57,6 +57,19 @@ describe('digit-index shortcuts', () => {
     ).toBe(3)
   })
 
+  it('captures and matches macOS Option-composed digits (Option+2 -> ™)', () => {
+    const optionTwo = { key: '™', code: 'Digit2', meta: false, control: false, alt: true, shift: false }
+    expect(keybindingFromInputForAction('tab.selectByIndex', optionTwo, 'darwin')).toEqual({
+      ok: true,
+      value: 'Alt+1'
+    })
+    expect(
+      matchKeybindingDigitIndex('tab.selectByIndex', optionTwo, 'darwin', {
+        'tab.selectByIndex': ['Alt+1']
+      })
+    ).toBe(1)
+  })
+
   it('ignores non-range presses and extra modifiers', () => {
     expect(
       matchKeybindingDigitIndex(
