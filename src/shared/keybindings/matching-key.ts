@@ -6,6 +6,7 @@ import {
   logicalKeyTokenFromInput,
   physicalCodeKeyTokenFromInput,
   numpadCodeKeyTokenFromInput,
+  shouldUseMacOptionComposedCaptureFallback,
   isPunctuationKeyToken
 } from './input'
 
@@ -90,12 +91,10 @@ export function digitKeyMatches(
   if (logicalKey && logicalKey.length === 1 && logicalKey >= '0' && logicalKey <= '9') {
     return logicalKey === digit
   }
-  // Why: macOS Option+digit composes a symbol (Option+1 -> ¡), so Alt+digit needs the physical code.
   const macOptionDigit =
-    getKeybindingPlatform(platform) === 'darwin' && hasModifier(input, 'alt') && logicalKey === null
+    logicalKey === null && shouldUseMacOptionComposedCaptureFallback(input, platform)
   return (
-    (canFallBackToPhysicalCode(input, platform) || macOptionDigit) &&
-    input.code === `Digit${digit}`
+    (canFallBackToPhysicalCode(input, platform) || macOptionDigit) && input.code === `Digit${digit}`
   )
 }
 
