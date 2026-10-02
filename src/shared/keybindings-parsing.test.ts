@@ -103,7 +103,7 @@ describe('keybindings', () => {
         { key: '¡', code: 'Digit1', meta: true, control: false, alt: true, shift: false },
         'darwin'
       )
-    ).toEqual({ ok: false, error: 'Press a key, not only a modifier.' })
+    ).toEqual({ ok: true, value: 'Mod+Alt+1' })
   })
 
   it('applies per-action bare-key rules while capturing shortcuts', () => {
